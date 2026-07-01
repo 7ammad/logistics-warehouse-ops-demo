@@ -6,7 +6,7 @@
 <title>Siemens Energy KSA — Project Brief / بيانات المشروع</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    Siemens Energy KSA — Project Brief intake
@@ -25,10 +25,11 @@
   --danger:#ff5b6e; --danger-weak:rgba(255,91,110,.15);
   --shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 18px 40px -24px rgba(0,0,0,.7);
   --radius:14px; --radius-sm:10px;
-  --font-en:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
-  --font-ar:"IBM Plex Sans Arabic","Segoe UI","Tahoma",system-ui,sans-serif;
+  --font-en:"Siemens Sans","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font-ar:"Siemens Sans Arabic","IBM Plex Sans Arabic","Segoe UI","Tahoma",system-ui,sans-serif;
   --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --font:var(--font-ar);
+  --logo-fill:#f2f2f2;
 }
 :root[data-theme="light"]{
   --bg:#f5f2fb;
@@ -36,7 +37,7 @@
             radial-gradient(900px 500px at -10% 110%, #e1f3f1 0%, transparent 55%), #f5f2fb;
   --surface:#ffffff; --surface-2:#f6f2fc; --elev:#ffffff;
   --border:rgba(27,21,52,.10); --border-2:rgba(27,21,52,.18);
-  --fg:#1b1534; --fg-2:#3d3557; --muted:#5d596e; --faint:#ada9c2;
+  --fg:#1b1534; --fg-2:#3d3557; --muted:#5d596e; --faint:#ada9c2; --logo-fill:#1b1534;
   --accent:#8a00e5; --accent-2:#641e8c; --accent-weak:rgba(138,0,229,.10); --accent-line:rgba(138,0,229,.28); --on-accent:#ffffff;
   --violet:#017873; --violet-weak:rgba(1,120,115,.12);
   --ok:#11a866; --ok-weak:rgba(17,168,102,.12); --warn:#b8841a; --warn-weak:rgba(184,132,26,.12);
@@ -56,11 +57,10 @@ a{color:var(--accent-2);}
   backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
 .top-in{max-width:860px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px;}
 .brand{display:flex;align-items:center;gap:11px;}
-.brand-mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
-  background:linear-gradient(150deg,var(--accent),var(--violet));box-shadow:var(--shadow);}
-.brand-mark svg{width:19px;height:19px;}
+.se-logo{display:block;width:112px;height:39px;flex:0 0 auto;background-color:var(--logo-fill);
+  -webkit-mask:url("assets/se-logo-white.png") no-repeat center/contain; mask:url("assets/se-logo-white.png") no-repeat center/contain;}
 .brand-txt{display:flex;flex-direction:column;line-height:1.15;}
-.brand-txt .b1{font-weight:600;font-size:13.5px;}
+.brand-txt .b1{display:none;}
 .brand-txt .b2{font-size:11.5px;color:var(--muted);}
 .spacer{flex:1;}
 .iconbtn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;
@@ -153,10 +153,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 <div class="top">
   <div class="top-in">
     <div class="brand">
-      <div class="brand-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M5 19c0-8 6-13 14-13 0 8-6 13-14 13z"/><path d="M5 19c3-5 7-7 11-8"/></svg>
-      </div>
+      <span class="se-logo" role="img" aria-label="Siemens Energy"></span>
       <div class="brand-txt">
         <span class="b1" data-ar="سيمنس إنرجي – السعودية" data-en="Siemens Energy – KSA">سيمنس إنرجي – السعودية</span>
         <span class="b2" data-ar="اللوجستيات والمستودعات" data-en="Logistics & Warehouse">اللوجستيات والمستودعات</span>
