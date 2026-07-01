@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Siemens Energy KSA — Logistics & Warehouse Operations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 19c0-8 6-13 14-13 0 8-6 13-14 13z"/><path d="M5 19c3-5 7-7 11-8"/>
+          </svg>
+        </div>
+        <div class="brand-txt">
+          <span class="b1" id="brand-org">Siemens Energy – KSA</span>
+          <span class="b2" id="brand-unit">Logistics & Warehouse</span>
+        </div>
+      </div>
+      <nav class="nav" id="nav"></nav>
+      <div class="sidebar-foot"><span class="dot-live"></span><span id="live-txt">Live data</span></div>
+    </aside>
+
+    <!-- Main -->
+    <div class="main">
+      <header class="topbar">
+        <button class="iconbtn menu-toggle" id="btn-menu" aria-label="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="page-title">
+          <h1 id="page-title">—</h1>
+          <p id="page-sub">—</p>
+        </div>
+        <span class="spacer"></span>
+        <div class="control">
+          <label id="lbl-project">Project</label>
+          <select class="sel" id="f-project"></select>
+        </div>
+        <div class="control">
+          <label id="lbl-month">Month</label>
+          <select class="sel" id="f-month"></select>
+        </div>
+        <button class="iconbtn" id="btn-lang" aria-label="Language">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14.5 0 17M12 3.5c-2.5 2.5-2.5 14.5 0 17"/>
+          </svg>
+          <span id="lang-txt">EN</span>
+        </button>
+        <button class="iconbtn" id="btn-theme" aria-label="Theme">
+          <svg id="theme-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></svg>
+        </button>
+      </header>
+
+      <main class="content" id="content"></main>
+    </div>
+  </div>
+  <div class="scrim" id="scrim"></div>
+
+  <script src="i18n.js"></script>
+  <script src="data.js"></script>
+  <script src="charts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
