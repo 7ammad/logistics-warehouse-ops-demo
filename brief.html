@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Siemens Energy KSA — Project Brief / بيانات المشروع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Siemens Energy KSA — Project Brief intake
+   Reuses the dashboard design system (petrol/teal, IBM Plex).
+   ============================================================ */
+:root{
+  --bg:#0a1417;
+  --bg-grad:radial-gradient(1200px 600px at 100% -10%, #10282b 0%, transparent 60%),
+            radial-gradient(900px 500px at -10% 110%, #161033 0%, transparent 55%), #0a1417;
+  --surface:#0f1c20; --surface-2:#13262b; --elev:#16292e;
+  --border:rgba(255,255,255,.085); --border-2:rgba(255,255,255,.14);
+  --fg:#e8f0f1; --fg-2:#b8c8cb; --muted:#7e9398; --faint:#56696e;
+  --accent:#17c0b6; --accent-2:#3ad6cc; --accent-weak:rgba(23,192,182,.13); --accent-line:rgba(23,192,182,.30);
+  --violet:#8b78ff; --violet-weak:rgba(139,120,255,.14);
+  --ok:#2fcf86; --ok-weak:rgba(47,207,134,.14); --warn:#f4b740; --warn-weak:rgba(244,183,64,.14);
+  --danger:#ff5b6e; --danger-weak:rgba(255,91,110,.15);
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 18px 40px -24px rgba(0,0,0,.7);
+  --radius:14px; --radius-sm:10px;
+  --font-en:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --font-ar:"IBM Plex Sans Arabic","Segoe UI","Tahoma",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --font:var(--font-ar);
+}
+:root[data-theme="light"]{
+  --bg:#eef3f4;
+  --bg-grad:radial-gradient(1100px 560px at 100% -10%, #dbeeec 0%, transparent 60%),
+            radial-gradient(900px 500px at -10% 110%, #e7e3fb 0%, transparent 55%), #eef3f4;
+  --surface:#ffffff; --surface-2:#f4f8f8; --elev:#ffffff;
+  --border:rgba(11,33,38,.10); --border-2:rgba(11,33,38,.18);
+  --fg:#0c1c20; --fg-2:#2c4248; --muted:#5d7176; --faint:#93a6aa;
+  --accent:#0c8f87; --accent-2:#0aa79d; --accent-weak:rgba(12,143,135,.10); --accent-line:rgba(12,143,135,.28);
+  --violet:#6b54e8; --violet-weak:rgba(107,84,232,.10);
+  --ok:#11a866; --ok-weak:rgba(17,168,102,.12); --warn:#b8841a; --warn-weak:rgba(184,132,26,.12);
+  --danger:#d83a4d; --danger-weak:rgba(216,58,77,.10);
+  --shadow:0 1px 2px rgba(11,33,38,.04), 0 16px 36px -26px rgba(11,33,38,.35);
+}
+html[lang="en"]{--font:var(--font-en);}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{margin:0;font-family:var(--font);background:var(--bg-grad);color:var(--fg);
+  -webkit-font-smoothing:antialiased;font-size:15px;line-height:1.6;}
+a{color:var(--accent-2);}
+.wrap{max-width:860px;margin:0 auto;padding:0 20px 96px;}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in oklab,var(--bg) 82%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+.top-in{max-width:860px;margin:0 auto;padding:14px 20px;display:flex;align-items:center;gap:12px;}
+.brand{display:flex;align-items:center;gap:11px;}
+.brand-mark{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+  background:linear-gradient(150deg,var(--accent),var(--violet));box-shadow:var(--shadow);}
+.brand-mark svg{width:19px;height:19px;}
+.brand-txt{display:flex;flex-direction:column;line-height:1.15;}
+.brand-txt .b1{font-weight:600;font-size:13.5px;}
+.brand-txt .b2{font-size:11.5px;color:var(--muted);}
+.spacer{flex:1;}
+.iconbtn{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 11px;border-radius:9px;
+  border:1px solid var(--border-2);background:var(--surface-2);color:var(--fg-2);cursor:pointer;
+  font-family:var(--font);font-size:13px;font-weight:600;}
+.iconbtn:hover{border-color:var(--accent-line);color:var(--fg);}
+.iconbtn svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;}
+
+/* Hero */
+.hero{padding:34px 0 8px;}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;letter-spacing:.02em;
+  color:var(--accent-2);background:var(--accent-weak);border:1px solid var(--accent-line);
+  padding:5px 11px;border-radius:999px;}
+.hero h1{font-size:27px;line-height:1.25;margin:15px 0 8px;font-weight:700;letter-spacing:-.01em;}
+.hero p{color:var(--fg-2);font-size:15.5px;max-width:70ch;margin:0;}
+.hero .note{margin-top:14px;color:var(--muted);font-size:13.5px;background:var(--surface);border:1px solid var(--border);
+  border-inline-start:3px solid var(--accent);padding:11px 14px;border-radius:var(--radius-sm);}
+
+/* Progress */
+.prog{position:sticky;top:65px;z-index:10;margin:20px 0 6px;height:5px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--violet));transition:width .3s;}
+
+/* Section card */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-top:18px;overflow:hidden;}
+.card > .head{display:flex;align-items:flex-start;gap:12px;padding:18px 20px 4px;}
+.card .num{flex:0 0 auto;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:var(--accent-weak);color:var(--accent-2);font-weight:700;font-size:13px;font-family:var(--font-mono);border:1px solid var(--accent-line);}
+.card .head h2{font-size:16.5px;margin:0 0 2px;font-weight:700;}
+.card .head p{margin:0;color:var(--muted);font-size:13px;}
+.card .body{padding:6px 20px 20px;}
+
+.q{margin-top:16px;}
+.q > label{display:block;font-weight:600;font-size:14px;margin-bottom:7px;}
+.q .hint{color:var(--muted);font-weight:400;font-size:12.5px;display:block;margin-top:2px;}
+.star{color:var(--warn);font-weight:700;margin-inline-start:4px;}
+input[type=text],input[type=number],textarea,select{
+  width:100%;font-family:var(--font);font-size:14px;color:var(--fg);
+  background:var(--surface-2);border:1px solid var(--border-2);border-radius:var(--radius-sm);
+  padding:10px 12px;outline:none;transition:border-color .15s,box-shadow .15s;}
+textarea{min-height:76px;resize:vertical;line-height:1.55;}
+input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak);}
+::placeholder{color:var(--faint);}
+
+/* KPI repeater */
+.kpi-row{display:grid;grid-template-columns:1fr 150px 34px;gap:8px;margin-bottom:8px;}
+.kpi-row .del{border:1px solid var(--border-2);background:var(--surface-2);color:var(--muted);border-radius:9px;cursor:pointer;font-size:16px;line-height:1;}
+.kpi-row .del:hover{color:var(--danger);border-color:var(--danger);}
+.addbtn{margin-top:4px;display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px dashed var(--border-2);
+  color:var(--accent-2);border-radius:9px;padding:8px 12px;cursor:pointer;font-family:var(--font);font-weight:600;font-size:13px;}
+.addbtn:hover{border-color:var(--accent);}
+
+/* Upload block */
+.upload{border:1px dashed var(--accent-line);background:var(--accent-weak);border-radius:var(--radius);
+  padding:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap;}
+.upload .u-ic{width:40px;height:40px;flex:0 0 auto;border-radius:11px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--accent-line);}
+.upload .u-ic svg{width:20px;height:20px;fill:none;stroke:var(--accent-2);stroke-width:1.7;}
+.upload .u-txt{flex:1;min-width:200px;}
+.upload .u-txt b{display:block;font-size:14.5px;}
+.upload .u-txt span{color:var(--muted);font-size:12.5px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:11px;
+  border:none;cursor:pointer;font-family:var(--font);font-weight:700;font-size:14.5px;text-decoration:none;transition:transform .08s,filter .15s;}
+.btn:active{transform:translateY(1px);}
+.btn-primary{background:linear-gradient(150deg,var(--accent),var(--accent-2));color:#04211f;}
+.btn-primary:hover{filter:brightness(1.06);}
+.btn-ghost{background:var(--surface-2);border:1px solid var(--border-2);color:var(--fg);}
+.btn-ghost:hover{border-color:var(--accent-line);}
+.btn[disabled]{opacity:.45;cursor:not-allowed;}
+.chk-list{display:flex;flex-direction:column;gap:9px;margin-top:4px;}
+.chk{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--fg-2);}
+.chk input{margin-top:3px;width:16px;height:16px;accent-color:var(--accent);flex:0 0 auto;}
+
+/* Submit bar */
+.submit{margin-top:26px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+.submit .row{display:flex;gap:12px;flex-wrap:wrap;}
+.submit .name-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.msg{margin-top:12px;font-size:13.5px;padding:11px 14px;border-radius:var(--radius-sm);display:none;}
+.msg.ok{display:block;background:var(--ok-weak);color:var(--ok);border:1px solid color-mix(in oklab,var(--ok) 40%,transparent);}
+.msg.info{display:block;background:var(--accent-weak);color:var(--accent-2);border:1px solid var(--accent-line);}
+.foot{margin-top:26px;text-align:center;color:var(--faint);font-size:12px;}
+.hide{display:none !important;}
+@media (max-width:560px){
+  .hero h1{font-size:22px;} .kpi-row{grid-template-columns:1fr;} .kpi-row .del{width:auto;height:34px;}
+  .submit .name-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="top-in">
+    <div class="brand">
+      <div class="brand-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 19c0-8 6-13 14-13 0 8-6 13-14 13z"/><path d="M5 19c3-5 7-7 11-8"/></svg>
+      </div>
+      <div class="brand-txt">
+        <span class="b1" data-ar="سيمنس إنرجي – السعودية" data-en="Siemens Energy – KSA">سيمنس إنرجي – السعودية</span>
+        <span class="b2" data-ar="اللوجستيات والمستودعات" data-en="Logistics & Warehouse">اللوجستيات والمستودعات</span>
+      </div>
+    </div>
+    <span class="spacer"></span>
+    <a class="iconbtn" id="back-demo" href="index.html">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M3 12h18"/></svg>
+      <span data-ar="الداشبورد" data-en="Dashboard">الداشبورد</span>
+    </a>
+    <button class="iconbtn" id="btn-lang">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c2.5 2.5 2.5 14.5 0 17M12 3.5c-2.5 2.5-2.5 14.5 0 17"/></svg>
+      <span id="lang-txt">EN</span>
+    </button>
+    <button class="iconbtn" id="btn-theme" aria-label="theme"><svg id="theme-ic" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"></svg></button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="hero">
+    <span class="eyebrow" data-ar="نموذج بيانات المشروع" data-en="Project brief">● <span data-ar="نموذج بيانات المشروع" data-en="Project brief"></span></span>
+    <h1 data-ar="بيانات المشروع — بأسئلة بسيطة" data-en="The project brief — as simple questions">بيانات المشروع — بأسئلة بسيطة</h1>
+    <p data-ar="سألت: وش تقصدون بـ &laquo;بيانات المشروع&raquo;؟ هذي هي — مو ورقة رسمية، بس أسئلة تشرح لنا شغلك عشان نبني لك الأداة الصح. عبّي اللي تقدر عليه، تجاوز اللي ما ينطبق، وارفع ملفاتك في آخر الصفحة. ما فيه إجابة غلط."
+       data-en="You asked: what do we mean by &lsquo;project brief&rsquo;? This is it — not a formal document, just questions that explain your work so we build the right tool. Fill what you can, skip what doesn't apply, and upload your files at the bottom. There are no wrong answers.">
+       سألت: وش تقصدون بـ «بيانات المشروع»؟ هذي هي — مو ورقة رسمية، بس أسئلة تشرح لنا شغلك عشان نبني لك الأداة الصح. عبّي اللي تقدر عليه، تجاوز اللي ما ينطبق، وارفع ملفاتك في آخر الصفحة. ما فيه إجابة غلط.</p>
+    <div class="note" data-ar="⚑ العلامة الصفراء (★) تعني أن هذا السؤال هو الأهم لنا. باقي الأسئلة ممكن تكملها لاحقاً. كل شيء تكتبه يُحفظ في متصفحك تلقائياً، فتقدر ترجع وتكمل."
+         data-en="⚑ A yellow star (★) marks the questions that matter most to us. The rest can follow later. Everything you type is saved in your browser automatically, so you can leave and come back.">
+         ⚑ العلامة الصفراء (★) تعني أن هذا السؤال هو الأهم لنا. باقي الأسئلة ممكن تكملها لاحقاً. كل شيء تكتبه يُحفظ في متصفحك تلقائياً، فتقدر ترجع وتكمل.</div>
+  </div>
+
+  <div class="prog"><i id="prog-bar"></i></div>
+
+  <form id="brief-form" autocomplete="off">
+
+  <!-- 1. Basics -->
+  <div class="card">
+    <div class="head"><span class="num">1</span><div>
+      <h2 data-ar="الأساسيات — مين أنت ووش القسم" data-en="The basics — who you are & the department">الأساسيات — مين أنت ووش القسم</h2>
+      <p data-ar="عشان نفهم السياق ومين بيستخدم الأداة" data-en="So we understand the context and who will use the tool">عشان نفهم السياق ومين بيستخدم الأداة</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="اسمك ومسمّاك الوظيفي" data-en="Your name & job title">اسمك ومسمّاك الوظيفي</label>
+        <input type="text" name="role_title" data-ar-ph="مثال: متعب — مدير اللوجستيات والمستودعات" data-en-ph="e.g. Metab — Logistics & Warehouse Lead"></div>
+      <div class="q"><label data-ar="القسم / الإدارة" data-en="Department / unit">القسم / الإدارة</label>
+        <input type="text" name="department" data-ar-ph="اللوجستيات والمستودعات — سيمنس إنرجي" data-en-ph="Logistics & Warehouse — Siemens Energy"></div>
+      <div class="q"><label data-ar="مين اللي بيستخدم الأداة أو يشوف التقارير؟ وكم مرّة؟" data-en="Who will use the tool or view the reports? How often?">مين اللي بيستخدم الأداة أو يشوف التقارير؟ وكم مرّة؟<span class="star">★</span></label>
+        <input type="text" name="audience" data-ar-ph="مثال: أنا يومياً، ومديري تقرير شهري" data-en-ph="e.g. me daily, my manager a monthly report"></div>
+    </div>
+  </div>
+
+  <!-- 2. Goal & pain -->
+  <div class="card">
+    <div class="head"><span class="num">2</span><div>
+      <h2 data-ar="الهدف والألم" data-en="The goal & the pain">الهدف والألم</h2>
+      <p data-ar="نبني للهدف الصح، مو لمجرد شاشة حلوة" data-en="We build for the right goal, not just a pretty screen">نبني للهدف الصح، مو لمجرد شاشة حلوة</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="بجملة وحدة: وش القرار أو الإجراء اللي بتقدر تسوّيه بهالأداة وما تقدر عليه اليوم؟" data-en="In one sentence: what decision or action will this let you take that you can't today?">بجملة وحدة: وش القرار أو الإجراء اللي بتقدر تسوّيه بهالأداة وما تقدر عليه اليوم؟<span class="star">★</span></label>
+        <textarea name="goal_oneline"></textarea></div>
+      <div class="q"><label data-ar="وش المؤلم حالياً؟ كيف تجمّع هالبيانات اليوم، وكم ياخذ وقت؟" data-en="What's painful now? How do you compile this today, and how long does it take?">وش المؤلم حالياً؟ كيف تجمّع هالبيانات اليوم، وكم ياخذ وقت؟</label>
+        <textarea name="pain_today"></textarea></div>
+      <div class="q"><label data-ar="الهدفان اللي اتفقنا عليهما — أي جزء أهم لك، وليش؟" data-en="The two goals we agreed on — which matters more to you, and why?">الهدفان اللي اتفقنا عليهما — أي جزء أهم لك، وليش؟
+        <span class="hint" data-ar="١) الوضوح: تقارير وتتبّع الأداء.  ٢) الكفاءة: أتمتة الإدخال اليدوي وتوليد المستندات." data-en="1) Visibility: reporting & performance tracking.  2) Efficiency: automating manual entry & document generation."></span></label>
+        <textarea name="goal_balance"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 3. The process / flows -->
+  <div class="card">
+    <div class="head"><span class="num">3</span><div>
+      <h2 data-ar="شغلك خطوة بخطوة — المدخلات والمخرجات" data-en="Your work step by step — inputs & outputs">شغلك خطوة بخطوة — المدخلات والمخرجات</h2>
+      <p data-ar="لكل نشاط: سطرين عن الخطوات، مين يسوّيها، ووين يُسجّل الشيء" data-en="For each activity: a couple of lines on the steps, who does them, and where it's recorded">لكل نشاط: سطرين عن الخطوات، مين يسوّيها، ووين يُسجّل الشيء</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="الشحنات الواردة (الاستلام)" data-en="Inbound shipments (receiving)">الشحنات الواردة (الاستلام)</label>
+        <textarea name="flow_inbound"></textarea></div>
+      <div class="q"><label data-ar="الشحنات الصادرة / الاستلام من المورّد — بما فيها مشكلة مستندات المورّد اللي ذكرتها" data-en="Outbound / pickup — including the supplier-document problem you mentioned">الشحنات الصادرة / الاستلام من المورّد — بما فيها مشكلة مستندات المورّد اللي ذكرتها</label>
+        <textarea name="flow_outbound"></textarea></div>
+      <div class="q"><label data-ar="التخليص الجمركي — مسار مؤشر الـ ٣ أيام" data-en="Customs clearance — the 3-day KPI flow">التخليص الجمركي — مسار مؤشر الـ ٣ أيام<span class="star">★</span></label>
+        <textarea name="flow_customs"></textarea></div>
+      <div class="q"><label data-ar="طلب صرف المواد ← التجهيز (kitting) ← الصرف لـ &laquo;Protection&raquo; — ووش هي Protection؟" data-en="Material Issuance Request → kitting → issuance to &lsquo;Protection&rsquo; — and what is Protection?">طلب صرف المواد ← التجهيز (kitting) ← الصرف لـ «Protection» — ووش هي Protection؟<span class="star">★</span></label>
+        <textarea name="flow_mir"></textarea></div>
+      <div class="q"><label data-ar="حركة المعدات الكبيرة" data-en="Large-equipment movement">حركة المعدات الكبيرة</label>
+        <textarea name="flow_equipment"></textarea></div>
+      <div class="q"><label data-ar="طلبات التجميع (Collections)" data-en="Collection orders">طلبات التجميع (Collections)</label>
+        <textarea name="flow_collections"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 4. KPIs -->
+  <div class="card">
+    <div class="head"><span class="num">4</span><div>
+      <h2 data-ar="مؤشرات الأداء (KPIs) + الرقم المستهدف لكل واحد" data-en="Your KPIs + the target for each">مؤشرات الأداء (KPIs) + الرقم المستهدف لكل واحد</h2>
+      <p data-ar="عندنا حتى الآن واحد فقط: التخليص ≤ ٣ أيام. أضف الباقي." data-en="So far we have only one: clearance ≤ 3 days. Add the rest.">عندنا حتى الآن واحد فقط: التخليص ≤ ٣ أيام. أضف الباقي.</p>
+    </div></div>
+    <div class="body">
+      <div id="kpi-list"></div>
+      <button type="button" class="addbtn" id="add-kpi">＋ <span data-ar="أضف مؤشراً" data-en="Add a KPI">أضف مؤشراً</span></button>
+      <div class="q"><label data-ar="كيف يُحسب كل مؤشر؟ (المعادلة / اللي يُعدّ)" data-en="How is each KPI calculated? (the formula / what gets counted)">كيف يُحسب كل مؤشر؟ (المعادلة / اللي يُعدّ)</label>
+        <textarea name="kpi_formula"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 5. Data location -->
+  <div class="card">
+    <div class="head"><span class="num">5</span><div>
+      <h2 data-ar="وين تعيش بياناتك اليوم؟ — الأهم" data-en="Where does your data live today? — the make-or-break">وين تعيش بياناتك اليوم؟ — الأهم</h2>
+      <p data-ar="هذا اللي يقرّر التقنية. ما افترضنا أي نظام — قل لنا الواقع." data-en="This decides the tech. We assumed no system — tell us the reality.">هذا اللي يقرّر التقنية. ما افترضنا أي نظام — قل لنا الواقع.</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="لكل مؤشر: وين البيانات الآن؟ (إكسل / نظام مستودع / مجلد مشترك / إيميل / ورق-يدوي / مكان ثاني)" data-en="For each metric: where is the data now? (Excel / a warehouse system / shared folder / email / paper-manual / somewhere else)">لكل مؤشر: وين البيانات الآن؟ (إكسل / نظام مستودع / مجلد مشترك / إيميل / ورق-يدوي / مكان ثاني)<span class="star">★</span></label>
+        <textarea name="data_location" data-ar-ph="مثال: الشحنات في ملف إكسل على درايف — التخليص أتابعه بالإيميل — الـ MIR ورقي…" data-en-ph="e.g. shipments in an Excel on Drive — clearance tracked via email — MIRs on paper…"></textarea></div>
+      <div class="q"><label data-ar="مين يملك/يحدّث كل مصدر، كم مرّة، وكم صف تقريباً بالشهر؟" data-en="Who owns/updates each source, how often, and roughly how many rows per month?">مين يملك/يحدّث كل مصدر، كم مرّة، وكم صف تقريباً بالشهر؟</label>
+        <textarea name="data_owners"></textarea></div>
+      <div class="q"><label data-ar="أهم شيء: أرفق عيّنات (مموّهة/redacted) — لوق شحنات، نموذج MIR، شيت المساحة، شيت الساعات، أو حتى سكرين شوت للإكسل." data-en="Most important: attach redacted samples — a shipment log, a sample MIR, the space sheet, the man-hours sheet, or even a screenshot of your Excel.">أهم شيء: أرفق عيّنات (مموّهة/redacted) — لوق شحنات، نموذج MIR، شيت المساحة، شيت الساعات، أو حتى سكرين شوت للإكسل.<span class="star">★</span>
+        <span class="hint" data-ar="↓ ارفعها في قسم الملفات بآخر الصفحة." data-en="↓ Upload them in the files section at the bottom."></span></label></div>
+    </div>
+  </div>
+
+  <!-- 6. Projects -->
+  <div class="card">
+    <div class="head"><span class="num">6</span><div>
+      <h2 data-ar="قائمة المشاريع — صحّح لنا" data-en="Your project list — correct us">قائمة المشاريع — صحّح لنا</h2>
+      <p data-ar="سمعنا الأسماء صوتياً — نحتاج الإملاء والهيكلة الصحيحة" data-en="We heard the names from audio — we need the correct spelling & structure">سمعنا الأسماء صوتياً — نحتاج الإملاء والهيكلة الصحيحة</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="أكّد قائمة المشاريع وهيكلتها (أب/فرع)" data-en="Confirm the project master list & structure (parent/child)">أكّد قائمة المشاريع وهيكلتها (أب/فرع)<span class="star">★</span>
+        <span class="hint" data-ar="سمعنا: فاضلي ٢؛ بقايق ← ريفامب + ISP؛ جفورة ٢ ← GCB + GPP؛ مشروع Gas Turbine؛ وواحد ما لحقناه." data-en="We heard: Fadhili 2; Abqaiq → Revamp + ISP; Jafurah 2 → GCB + GPP; a Gas Turbine project; and one more we couldn't catch."></span></label>
+        <textarea name="projects_list"></textarea></div>
+      <div class="q"><label data-ar="أي مؤشرات تُتابَع لكل مشروع؟" data-en="Which metrics are tracked per project?">أي مؤشرات تُتابَع لكل مشروع؟</label>
+        <textarea name="projects_metrics"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 7. Space & labor -->
+  <div class="card">
+    <div class="head"><span class="num">7</span><div>
+      <h2 data-ar="المساحة والعمالة" data-en="Space & labor">المساحة والعمالة</h2>
+      <p data-ar="الأرقام ومصدرها" data-en="The figures and where they come from">الأرقام ومصدرها</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="المساحة: الداخلي/الخارجي بالمتر²، والتكلفة لكل مشروع — من وين هالأرقام؟" data-en="Space: indoor/outdoor m², and cost per project — where do these figures come from?">المساحة: الداخلي/الخارجي بالمتر²، والتكلفة لكل مشروع — من وين هالأرقام؟</label>
+        <textarea name="space"></textarea></div>
+      <div class="q"><label data-ar="ساعات العمل: عدد عمالة الطرف الثالث، ساعات/شهر، والتكلفة/المعدّل — مصدرها؟" data-en="Man-hours: number of third-party staff, hours/month, and the rate/cost — source?">ساعات العمل: عدد عمالة الطرف الثالث، ساعات/شهر، والتكلفة/المعدّل — مصدرها؟</label>
+        <textarea name="labor"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 8. Environment -->
+  <div class="card">
+    <div class="head"><span class="num">8</span><div>
+      <h2 data-ar="الأدوات والصلاحيات — يقرّر التقنية كلها" data-en="Tools & access — decides the whole tech choice">الأدوات والصلاحيات — يقرّر التقنية كلها</h2>
+      <p data-ar="هذي مبادرتك الشخصية، فنبنيها داخل اللي عندك صلاحية عليه — بدون موافقة IT جديدة" data-en="This is your own initiative, so we build inside what you already have — no new IT approval">هذي مبادرتك الشخصية، فنبنيها داخل اللي عندك صلاحية عليه — بدون موافقة IT جديدة</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="وش الأدوات اللي عندك صلاحية عليها وتستخدمها يومياً؟ وش تقدر تبني/تثبّت بدون موافقة IT؟" data-en="What tools do you already have approved access to and use daily? What can you build/install without new IT approval?">وش الأدوات اللي عندك صلاحية عليها وتستخدمها يومياً؟ وش تقدر تبني/تثبّت بدون موافقة IT؟<span class="star">★</span></label>
+        <textarea name="env_tools"></textarea></div>
+      <div class="q"><label data-ar="ذكرت ربط مستندات الشحن بملف على Google Drive — هل هذا التخزين اللي تبيه؟ فيه قيود على مستندات الشركة هناك؟" data-en="You mentioned linking shipment papers to Google Drive — is that the storage you'd want? Any restrictions for company documents there?">ذكرت ربط مستندات الشحن بملف على Google Drive — هل هذا التخزين اللي تبيه؟ فيه قيود على مستندات الشركة هناك؟</label>
+        <textarea name="env_drive"></textarea></div>
+      <div class="q"><label data-ar="فيه بيانات ما تقدر تطلع من أنظمة سيمنس؟ شيء تبي الـ IT يعتمده لاحقاً لو كبرت الأداة؟" data-en="Any data that must NOT leave Siemens systems? Anything you'd want IT to bless later if this grows?">فيه بيانات ما تقدر تطلع من أنظمة سيمنس؟ شيء تبي الـ IT يعتمده لاحقاً لو كبرت الأداة؟</label>
+        <textarea name="env_constraints"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 9. Outputs -->
+  <div class="card">
+    <div class="head"><span class="num">9</span><div>
+      <h2 data-ar="المخرجات والجدول الزمني" data-en="Outputs & timeline">المخرجات والجدول الزمني</h2>
+      <p data-ar="كيف تبي النتيجة النهائية" data-en="How you want the final result">كيف تبي النتيجة النهائية</p>
+    </div></div>
+    <div class="body">
+      <div class="q"><label data-ar="التقرير الشهري للإدارة — أي صيغة، ووش لازم يعرض؟" data-en="The monthly management report — what format, and what must it show?">التقرير الشهري للإدارة — أي صيغة، ووش لازم يعرض؟</label>
+        <textarea name="report_format"></textarea></div>
+      <div class="q"><label data-ar="أي تنبيهات تبيها؟ (مثلاً: نبّهني إذا تجاوز التخليص ٣ أيام)" data-en="Any alerts you'd want? (e.g. notify when clearance exceeds 3 days)">أي تنبيهات تبيها؟ (مثلاً: نبّهني إذا تجاوز التخليص ٣ أيام)</label>
+        <textarea name="alerts"></textarea></div>
+      <div class="q"><label data-ar="الجدول الزمني المستهدف، ومين يعتمد المضي قدماً (أنت / مديرك / المشتريات)؟" data-en="Target timeline, and who approves moving forward (you / your manager / procurement)?">الجدول الزمني المستهدف، ومين يعتمد المضي قدماً (أنت / مديرك / المشتريات)؟</label>
+        <textarea name="timeline"></textarea></div>
+    </div>
+  </div>
+
+  <!-- 10. Files -->
+  <div class="card">
+    <div class="head"><span class="num">10</span><div>
+      <h2 data-ar="ارفع ملفاتك" data-en="Upload your files">ارفع ملفاتك</h2>
+      <p data-ar="أرفق اللي موجود — لا تصنع شيئاً جديداً" data-en="Attach whatever exists — don't create anything new">أرفق اللي موجود — لا تصنع شيئاً جديداً</p>
+    </div></div>
+    <div class="body">
+      <div class="chk-list">
+        <label class="chk"><input type="checkbox" disabled><span data-ar="ملفات الإكسل / الشيتات اللي تستخدمها اليوم (مموّهة تمام)" data-en="Current Excel trackers / sheets you use today (redacted is fine)">ملفات الإكسل / الشيتات اللي تستخدمها اليوم (مموّهة تمام)</span></label>
+        <label class="chk"><input type="checkbox" disabled><span data-ar="نموذج طلب صرف مواد (MIR)" data-en="A sample Material Issuance Request">نموذج طلب صرف مواد (MIR)</span></label>
+        <label class="chk"><input type="checkbox" disabled><span data-ar="أي تقرير أو داشبورد موجود (سكرين شوت يكفي)" data-en="Any existing report or dashboard (a screenshot is enough)">أي تقرير أو داشبورد موجود (سكرين شوت يكفي)</span></label>
+        <label class="chk"><input type="checkbox" disabled><span data-ar="قائمة المشاريع، وأي SOP / توثيق للعملية" data-en="The project list, and any process SOP / documentation">قائمة المشاريع، وأي SOP / توثيق للعملية</span></label>
+      </div>
+
+      <div class="upload" id="upload-drive" style="margin-top:16px;">
+        <div class="u-ic"><svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M6 10l6-6 6 6"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg></div>
+        <div class="u-txt">
+          <b data-ar="ارفع الملفات إلى مجلد آمن خاص" data-en="Upload files to a private, secure folder">ارفع الملفات إلى مجلد آمن خاص</b>
+          <span data-ar="مجلد Google Drive خاص — ملفاتك ما تنحفظ في الموقع العام، تروح مباشرة لمجلد مقفل نستلمه منه." data-en="A private Google Drive folder — your files are NOT stored on the public site; they go straight to a locked folder we receive them from.">مجلد Google Drive خاص — ملفاتك ما تنحفظ في الموقع العام، تروح مباشرة لمجلد مقفل نستلمه منه.</span>
+        </div>
+        <a class="btn btn-primary" id="drive-btn" href="#" target="_blank" rel="noopener">
+          <span data-ar="افتح مجلد الرفع" data-en="Open upload folder">افتح مجلد الرفع</span></a>
+      </div>
+      <div class="msg info" id="drive-fallback" style="display:block;">
+        <span data-ar="ملاحظة: لو ما فتح زر الرفع، أرسل ملفاتك مباشرة لحمّاد على واتساب/الإيميل مع الملف اللي بتنزّله تحت." data-en="Note: if the upload button isn't set yet, just send your files directly to Hammad on WhatsApp/email together with the file you download below.">ملاحظة: لو ما فتح زر الرفع، أرسل ملفاتك مباشرة لحمّاد على واتساب/الإيميل مع الملف اللي بتنزّله تحت.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Submit -->
+  <div class="submit">
+    <div class="name-grid">
+      <div><label class="hint" data-ar="اسمك (اختياري)" data-en="Your name (optional)"></label><input type="text" name="submitter_name" data-ar-ph="الاسم" data-en-ph="Name"></div>
+      <div><label class="hint" data-ar="إيميلك (اختياري)" data-en="Your email (optional)"></label><input type="text" name="submitter_email" data-ar-ph="me@company.com" data-en-ph="me@company.com"></div>
+    </div>
+    <div class="row">
+      <button type="submit" class="btn btn-primary" id="btn-submit">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+        <span data-ar="أرسل الإجابات" data-en="Send answers">أرسل الإجابات</span></button>
+      <button type="button" class="btn btn-ghost" id="btn-download">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        <span data-ar="نزّل إجاباتي كملف" data-en="Download my answers">نزّل إجاباتي كملف</span></button>
+    </div>
+    <div class="msg" id="submit-msg"></div>
+  </div>
+
+  </form>
+
+  <div class="foot" data-ar="سيمنس إنرجي – السعودية · اللوجستيات والمستودعات · نموذج تعريفي — لا يُخزَّن هنا أي بيانات تشغيلية حقيقية" data-en="Siemens Energy – KSA · Logistics & Warehouse · Intake form — no real operational data is stored here">
+    سيمنس إنرجي – السعودية · اللوجستيات والمستودعات · نموذج تعريفي — لا يُخزَّن هنا أي بيانات تشغيلية حقيقية</div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG — the ONLY two lines to wire up (both optional):
+   - formEndpoint: a form service URL (e.g. Formspree "https://formspree.io/f/xxxx").
+       Leave "" → the Send button falls back to downloading the answers file.
+   - driveUploadUrl: a Google Drive folder link set to accept uploads.
+       Leave "" → the upload button is hidden and files go via the download+send path.
+   ============================================================ */
+const CONFIG = {
+  formEndpoint: "",
+  driveUploadUrl: ""
+};
+
+const STORE_KEY = "siemens_brief_v1";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+
+/* ---------- language ---------- */
+let lang = localStorage.getItem("siemens_brief_lang") || "ar";
+function applyLang(){
+  const html = document.documentElement;
+  html.lang = lang; html.dir = (lang==="ar") ? "rtl" : "ltr";
+  $$("[data-ar]").forEach(el=>{ const v = el.getAttribute("data-"+lang); if(v!=null) el.textContent = v; });
+  $$("[data-ar-ph]").forEach(el=>{ const v = el.getAttribute("data-"+lang+"-ph"); if(v!=null) el.placeholder = v; });
+  $("#lang-txt").textContent = (lang==="ar") ? "EN" : "ع";
+  localStorage.setItem("siemens_brief_lang", lang);
+  renderKpiHeaders();
+}
+$("#btn-lang").addEventListener("click", ()=>{ lang = (lang==="ar")?"en":"ar"; applyLang(); });
+
+/* ---------- theme ---------- */
+const SUN = '<circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>';
+const MOON = '<path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/>';
+let theme = localStorage.getItem("siemens_brief_theme") || "dark";
+function applyTheme(){ document.documentElement.setAttribute("data-theme", theme);
+  $("#theme-ic").innerHTML = (theme==="dark") ? MOON : SUN;
+  localStorage.setItem("siemens_brief_theme", theme); }
+$("#btn-theme").addEventListener("click", ()=>{ theme = (theme==="dark")?"light":"dark"; applyTheme(); });
+
+/* ---------- KPI repeater ---------- */
+const KPI = { rows: [] };
+function kpiRowHtml(i, r){
+  const namePh = lang==="ar" ? "اسم المؤشر (مثال: زمن التخليص)" : "KPI name (e.g. clearance time)";
+  const tgtPh  = lang==="ar" ? "المستهدف (مثال: ≤ ٣ أيام)" : "Target (e.g. ≤ 3 days)";
+  return `<div class="kpi-row" data-i="${i}">
+    <input type="text" class="kpi-name" placeholder="${namePh}" value="${r?.name||""}">
+    <input type="text" class="kpi-target" placeholder="${tgtPh}" value="${r?.target||""}">
+    <button type="button" class="del" aria-label="remove">×</button></div>`;
+}
+function renderKpi(){
+  const box = $("#kpi-list");
+  box.innerHTML = KPI.rows.map((r,i)=>kpiRowHtml(i,r)).join("");
+  $$(".kpi-row .del", box).forEach(b=> b.addEventListener("click", e=>{
+    const i = +e.target.closest(".kpi-row").dataset.i; KPI.rows.splice(i,1);
+    if(!KPI.rows.length) KPI.rows.push({name:"",target:""}); renderKpi(); save(); }));
+  $$(".kpi-name", box).forEach((inp)=> inp.addEventListener("input", e=>{
+    KPI.rows[+e.target.closest(".kpi-row").dataset.i].name = e.target.value; save(); }));
+  $$(".kpi-target", box).forEach((inp)=> inp.addEventListener("input", e=>{
+    KPI.rows[+e.target.closest(".kpi-row").dataset.i].target = e.target.value; save(); }));
+}
+function renderKpiHeaders(){ renderKpi(); }
+$("#add-kpi").addEventListener("click", ()=>{ KPI.rows.push({name:"",target:""}); renderKpi(); save(); });
+
+/* ---------- persistence ---------- */
+function collect(){
+  const data = {};
+  $$("#brief-form [name]").forEach(el=> data[el.name] = el.value);
+  data.__kpis = KPI.rows.filter(r=> r.name || r.target);
+  data.__lang = lang;
+  return data;
+}
+function save(){ localStorage.setItem(STORE_KEY, JSON.stringify(collect())); updateProgress(); }
+function load(){
+  let d; try{ d = JSON.parse(localStorage.getItem(STORE_KEY)||"{}"); }catch(e){ d={}; }
+  $$("#brief-form [name]").forEach(el=>{ if(d[el.name]!=null) el.value = d[el.name]; });
+  KPI.rows = (d.__kpis && d.__kpis.length) ? d.__kpis
+    : [{name: (lang==="ar"?"زمن التخليص الجمركي":"Customs clearance time"), target:"≤ 3 "+(lang==="ar"?"أيام":"days")}];
+  renderKpi();
+}
+$$("#brief-form").forEach(f=> f.addEventListener("input", save));
+
+/* ---------- progress ---------- */
+function updateProgress(){
+  const fields = $$("#brief-form textarea, #brief-form input[type=text]").filter(el=> el.name);
+  const filled = fields.filter(el=> el.value.trim().length>2).length;
+  const kpiBonus = KPI.rows.some(r=>r.name)?1:0;
+  const pct = Math.min(100, Math.round(((filled+kpiBonus)/(fields.length))*100));
+  $("#prog-bar").style.width = pct+"%";
+}
+
+/* ---------- build the readable brief text ---------- */
+function briefText(){
+  const d = collect();
+  const L = (ar,en)=> lang==="ar"?ar:en;
+  const line = (q,v)=> v && v.trim() ? `### ${q}\n${v.trim()}\n\n` : "";
+  let t = `# ${L("بيانات مشروع — سيمنس إنرجي السعودية (اللوجستيات والمستودعات)","Project Brief — Siemens Energy KSA (Logistics & Warehouse)")}\n`;
+  t += `_${L("مُقدَّم من","Submitted by")}: ${d.submitter_name||d.role_title||"—"}`;
+  if(d.submitter_email) t += ` · ${d.submitter_email}`;
+  t += `_\n\n---\n\n`;
+  t += `## 1. ${L("الأساسيات","Basics")}\n`;
+  t += line(L("الاسم والمسمى","Name & title"), d.role_title);
+  t += line(L("القسم","Department"), d.department);
+  t += line(L("المستخدمون والتكرار","Audience & cadence"), d.audience);
+  t += `## 2. ${L("الهدف والألم","Goal & pain")}\n`;
+  t += line(L("الهدف بجملة","Goal in one line"), d.goal_oneline);
+  t += line(L("الألم الحالي","Pain today"), d.pain_today);
+  t += line(L("توازن الهدفين","Balance of the two goals"), d.goal_balance);
+  t += `## 3. ${L("العمليات","Process / flows")}\n`;
+  t += line(L("الوارد","Inbound"), d.flow_inbound);
+  t += line(L("الصادر","Outbound"), d.flow_outbound);
+  t += line(L("التخليص","Customs"), d.flow_customs);
+  t += line("MIR → kitting → issuance", d.flow_mir);
+  t += line(L("المعدات","Equipment"), d.flow_equipment);
+  t += line(L("التجميع","Collections"), d.flow_collections);
+  t += `## 4. ${L("المؤشرات","KPIs")}\n`;
+  (d.__kpis||[]).forEach(r=>{ if(r.name||r.target) t += `- ${r.name||"—"} → ${r.target||"—"}\n`; });
+  t += "\n"; t += line(L("طريقة الحساب","How calculated"), d.kpi_formula);
+  t += `## 5. ${L("مكان البيانات","Data location")}\n`;
+  t += line(L("وين تعيش البيانات","Where data lives"), d.data_location);
+  t += line(L("المُلّاك والتحديث","Owners & refresh"), d.data_owners);
+  t += `## 6. ${L("المشاريع","Projects")}\n`;
+  t += line(L("قائمة المشاريع","Project list"), d.projects_list);
+  t += line(L("مؤشرات لكل مشروع","Per-project metrics"), d.projects_metrics);
+  t += `## 7. ${L("المساحة والعمالة","Space & labor")}\n`;
+  t += line(L("المساحة","Space"), d.space);
+  t += line(L("ساعات العمل","Man-hours"), d.labor);
+  t += `## 8. ${L("الأدوات والصلاحيات","Tools & access")}\n`;
+  t += line(L("الأدوات المتاحة","Available tools"), d.env_tools);
+  t += line("Google Drive", d.env_drive);
+  t += line(L("قيود البيانات","Data constraints"), d.env_constraints);
+  t += `## 9. ${L("المخرجات","Outputs")}\n`;
+  t += line(L("صيغة التقرير","Report format"), d.report_format);
+  t += line(L("التنبيهات","Alerts"), d.alerts);
+  t += line(L("الجدول والاعتماد","Timeline & approver"), d.timeline);
+  return t;
+}
+function download(){
+  const blob = new Blob([briefText()], {type:"text/markdown;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = "metab-project-brief.md";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1500);
+}
+$("#btn-download").addEventListener("click", ()=>{
+  download();
+  const m = $("#submit-msg"); m.className="msg ok";
+  m.textContent = lang==="ar"
+    ? "✓ نزّلنا ملف إجاباتك. أرسله لحمّاد على واتساب/الإيميل مع ملفاتك من قسم الرفع."
+    : "✓ Your answers file was downloaded. Send it to Hammad on WhatsApp/email together with your files from the upload section.";
+});
+
+/* ---------- submit ---------- */
+$("#brief-form").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const m = $("#submit-msg");
+  if(!CONFIG.formEndpoint){
+    download();
+    m.className = "msg info";
+    m.textContent = lang==="ar"
+      ? "نزّلنا ملف إجاباتك (زر الإرسال المباشر غير مفعّل بعد). أرسل الملف + ملفاتك لحمّاد على واتساب/الإيميل — يوصلنا فوراً."
+      : "We downloaded your answers file (one-click send isn't wired yet). Send the file + your uploads to Hammad on WhatsApp/email — it reaches us immediately.";
+    return;
+  }
+  const btn = $("#btn-submit"); btn.disabled = true;
+  m.className="msg info"; m.textContent = lang==="ar" ? "جارٍ الإرسال…" : "Sending…";
+  try{
+    const res = await fetch(CONFIG.formEndpoint, {
+      method:"POST", headers:{"Accept":"application/json","Content-Type":"application/json"},
+      body: JSON.stringify({ ...collect(), _brief: briefText() })
+    });
+    if(res.ok){ m.className="msg ok"; m.textContent = lang==="ar" ? "✓ وصلتنا إجاباتك، شكراً! لا تنسَ ترفع ملفاتك من قسم الرفع." : "✓ Your answers reached us, thank you! Don't forget to upload your files from the upload section."; }
+    else throw new Error("bad status");
+  }catch(err){
+    download();
+    m.className="msg info";
+    m.textContent = lang==="ar" ? "تعذّر الإرسال المباشر — نزّلنا الملف، أرسله لحمّاد." : "Direct send failed — we downloaded the file, please send it to Hammad.";
+  }finally{ btn.disabled = false; }
+});
+
+/* ---------- wire drive button ---------- */
+if(CONFIG.driveUploadUrl){ $("#drive-btn").href = CONFIG.driveUploadUrl; $("#drive-fallback").style.display="none"; }
+else { $("#drive-btn").classList.add("hide"); }
+
+/* ---------- init ---------- */
+applyTheme(); load(); applyLang(); updateProgress();
+</script>
+</body>
+</html>

@@ -63,6 +63,107 @@
   </div>
   <div class="scrim" id="scrim"></div>
 
+  <!-- ===== Feedback widget (self-contained) ===== -->
+  <button id="fb-fab" aria-label="Feedback">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <span id="fb-fab-txt">ملاحظات</span>
+  </button>
+  <div id="fb-scrim"></div>
+  <div id="fb-panel" role="dialog" aria-modal="true">
+    <div class="fb-head">
+      <b id="fb-title">شاركنا ملاحظاتك</b>
+      <button id="fb-close" aria-label="close">×</button>
+    </div>
+    <p class="fb-sub" id="fb-sub">وش رأيك في هذه الشاشة؟ وش ناقص أو ودّك يتغيّر؟</p>
+    <div class="fb-ctx" id="fb-ctx"></div>
+    <textarea id="fb-text" rows="5"></textarea>
+    <input type="text" id="fb-name" >
+    <div class="fb-actions">
+      <button class="fb-btn fb-primary" id="fb-send"><span id="fb-send-txt">أرسل الملاحظة</span></button>
+      <a class="fb-btn fb-ghost" id="fb-brief" href="brief.html"><span id="fb-brief-txt">افتح نموذج المشروع</span></a>
+    </div>
+    <div class="fb-msg" id="fb-msg"></div>
+  </div>
+  <style>
+    #fb-fab{position:fixed;inset-inline-end:20px;inset-block-end:20px;z-index:90;display:inline-flex;align-items:center;gap:8px;
+      height:46px;padding:0 18px;border:none;border-radius:999px;cursor:pointer;font-family:var(--font);font-weight:700;font-size:14px;
+      color:#04211f;background:linear-gradient(150deg,var(--accent),var(--accent-2));box-shadow:0 10px 30px -10px rgba(0,0,0,.6);}
+    #fb-fab svg{width:19px;height:19px;}
+    #fb-fab:hover{filter:brightness(1.06);}
+    #fb-scrim{position:fixed;inset:0;background:rgba(2,10,12,.55);backdrop-filter:blur(2px);z-index:95;display:none;}
+    #fb-panel{position:fixed;inset-inline-end:20px;inset-block-end:20px;z-index:96;width:min(400px,calc(100vw - 40px));
+      background:var(--surface);border:1px solid var(--border-2);border-radius:16px;box-shadow:var(--shadow);padding:18px;display:none;}
+    #fb-panel.open,#fb-scrim.open{display:block;}
+    .fb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+    .fb-head b{font-size:15.5px;}
+    #fb-close{background:none;border:none;color:var(--muted);font-size:22px;line-height:1;cursor:pointer;}
+    #fb-close:hover{color:var(--fg);}
+    .fb-sub{color:var(--muted);font-size:12.5px;margin:0 0 12px;}
+    .fb-ctx{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;color:var(--accent-2);
+      background:var(--accent-weak);border:1px solid var(--accent-line);padding:4px 10px;border-radius:999px;margin-bottom:10px;}
+    #fb-text,#fb-name{width:100%;font-family:var(--font);font-size:14px;color:var(--fg);background:var(--surface-2);
+      border:1px solid var(--border-2);border-radius:10px;padding:10px 12px;outline:none;margin-bottom:10px;}
+    #fb-text{resize:vertical;line-height:1.55;} #fb-name{margin-bottom:12px;}
+    #fb-text:focus,#fb-name:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-weak);}
+    .fb-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .fb-btn{flex:1;min-width:130px;display:inline-flex;align-items:center;justify-content:center;height:42px;border-radius:11px;
+      cursor:pointer;font-family:var(--font);font-weight:700;font-size:14px;text-decoration:none;border:none;}
+    .fb-primary{background:linear-gradient(150deg,var(--accent),var(--accent-2));color:#04211f;}
+    .fb-primary:hover{filter:brightness(1.06);}
+    .fb-ghost{background:var(--surface-2);border:1px solid var(--border-2);color:var(--fg);}
+    .fb-ghost:hover{border-color:var(--accent-line);}
+    .fb-msg{font-size:13px;margin-top:10px;display:none;}
+    .fb-msg.ok{display:block;color:var(--ok);} .fb-msg.info{display:block;color:var(--accent-2);}
+  </style>
+  <script>
+  (function(){
+    /* Same wiring points as brief.html — leave "" for the download/send fallback. */
+    var FB_ENDPOINT = "";
+    var T = {
+      ar:{fab:"ملاحظات",title:"شاركنا ملاحظاتك",sub:"وش رأيك في هذه الشاشة؟ وش ناقص أو ودّك يتغيّر؟",ph:"اكتب ملاحظتك هنا…",name:"اسمك (اختياري)",send:"أرسل الملاحظة",brief:"افتح نموذج المشروع",on:"عن شاشة",okd:"✓ نزّلنا ملاحظتك — أرسلها لحمّاد على واتساب/الإيميل.",oks:"✓ وصلتنا ملاحظتك، شكراً!",empty:"اكتب ملاحظة أولاً 🙂"},
+      en:{fab:"Feedback",title:"Share your feedback",sub:"What do you think of this screen? What's missing or should change?",ph:"Type your feedback here…",name:"Your name (optional)",send:"Send feedback",brief:"Open project brief",on:"On screen",okd:"✓ Your feedback was downloaded — send it to Hammad on WhatsApp/email.",oks:"✓ Your feedback reached us, thank you!",empty:"Write a note first 🙂"}
+    };
+    function lng(){ return (document.documentElement.lang==="en") ? "en" : "ar"; }
+    function pageName(){ var el=document.getElementById("page-title"); return el ? el.textContent.trim() : "—"; }
+    var panel=document.getElementById("fb-panel"), scrim=document.getElementById("fb-scrim");
+    function paint(){ var t=T[lng()];
+      document.getElementById("fb-fab-txt").textContent=t.fab;
+      document.getElementById("fb-title").textContent=t.title;
+      document.getElementById("fb-sub").textContent=t.sub;
+      document.getElementById("fb-text").placeholder=t.ph;
+      document.getElementById("fb-name").placeholder=t.name;
+      document.getElementById("fb-send-txt").textContent=t.send;
+      document.getElementById("fb-brief-txt").textContent=t.brief;
+      document.getElementById("fb-ctx").textContent=t.on+": "+pageName();
+    }
+    function open(){ paint(); panel.classList.add("open"); scrim.classList.add("open"); document.getElementById("fb-text").focus(); }
+    function close(){ panel.classList.remove("open"); scrim.classList.remove("open"); }
+    document.getElementById("fb-fab").addEventListener("click", open);
+    document.getElementById("fb-close").addEventListener("click", close);
+    scrim.addEventListener("click", close);
+    function dl(payload){
+      var blob=new Blob([payload],{type:"text/markdown;charset=utf-8"}), url=URL.createObjectURL(blob), a=document.createElement("a");
+      a.href=url; a.download="dashboard-feedback.md"; document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){URL.revokeObjectURL(url);},1500);
+    }
+    document.getElementById("fb-send").addEventListener("click", async function(){
+      var t=T[lng()], txt=document.getElementById("fb-text").value.trim(), nm=document.getElementById("fb-name").value.trim(), msg=document.getElementById("fb-msg");
+      if(!txt){ msg.className="fb-msg info"; msg.textContent=t.empty; return; }
+      var body="# Dashboard feedback\n\n- Screen: "+pageName()+"\n- Language: "+lng()+(nm?("\n- From: "+nm):"")+"\n\n"+txt+"\n";
+      if(!FB_ENDPOINT){ dl(body); msg.className="fb-msg ok"; msg.textContent=t.okd; return; }
+      try{
+        var res=await fetch(FB_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},
+          body:JSON.stringify({type:"dashboard-feedback",screen:pageName(),lang:lng(),name:nm,feedback:txt})});
+        if(res.ok){ msg.className="fb-msg ok"; msg.textContent=t.oks; document.getElementById("fb-text").value=""; }
+        else throw 0;
+      }catch(e){ dl(body); msg.className="fb-msg info"; msg.textContent=t.okd; }
+    });
+    /* keep language in sync when the dashboard toggles */
+    document.getElementById("btn-lang") && document.getElementById("btn-lang").addEventListener("click", function(){ setTimeout(paint,50); });
+    paint();
+  })();
+  </script>
+
   <script src="i18n.js"></script>
   <script src="data.js"></script>
   <script src="charts.js"></script>
