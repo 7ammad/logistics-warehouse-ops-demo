@@ -13,17 +13,16 @@
    Reuses the dashboard design system (petrol/teal, IBM Plex).
    ============================================================ */
 :root{
-  --bg:#141026;
-  --bg-grad:radial-gradient(1200px 600px at 100% -10%, #4d217a 0%, transparent 62%),
-            radial-gradient(900px 500px at -10% 110%, #1b1734 0%, transparent 55%), #141026;
-  --surface:#1d1740; --surface-2:#251d4e; --elev:#2a2158;
-  --border:rgba(255,255,255,.09); --border-2:rgba(255,255,255,.15);
-  --fg:#ece9f6; --fg-2:#c4bcda; --muted:#948fac; --faint:#635a7e;
-  --accent:#b96cff; --accent-2:#cf9bff; --accent-weak:rgba(185,108,255,.15); --accent-line:rgba(185,108,255,.32); --on-accent:#1b1534;
-  --violet:#12b8ab; --violet-weak:rgba(18,184,171,.16);
-  --ok:#2fcf86; --ok-weak:rgba(47,207,134,.14); --warn:#f4b740; --warn-weak:rgba(244,183,64,.14);
-  --danger:#ff5b6e; --danger-weak:rgba(255,91,110,.15);
-  --shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 18px 40px -24px rgba(0,0,0,.7);
+  --bg:#1b1534;
+  --bg-grad:#1b1534;
+  --surface:#241c46; --surface-2:#2c2352; --elev:#33285e;
+  --border:rgba(255,255,255,.11); --border-2:rgba(255,255,255,.18);
+  --fg:#f2f2f2; --fg-2:#c9c2dc; --muted:#ada9c2; --faint:#7d7896;
+  --accent:#b96cff; --accent-2:#cf9bff; --accent-weak:rgba(185,108,255,.15); --accent-line:rgba(185,108,255,.34); --on-accent:#1b1534;
+  --violet:#4d9bff; --violet-weak:rgba(0,122,255,.18);
+  --ok:#14da79; --ok-weak:rgba(20,218,121,.15); --warn:#e85960; --warn-weak:rgba(232,89,96,.15);
+  --danger:#ef4048; --danger-weak:rgba(218,30,40,.18);
+  --shadow:none;
   --radius:14px; --radius-sm:10px;
   --font-en:"Siemens Sans","Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
   --font-ar:"Siemens Sans Arabic","IBM Plex Sans Arabic","Segoe UI","Tahoma",system-ui,sans-serif;
@@ -32,17 +31,16 @@
   --logo-fill:#f2f2f2;
 }
 :root[data-theme="light"]{
-  --bg:#f5f2fb;
-  --bg-grad:radial-gradient(1100px 560px at 100% -10%, #efe6fc 0%, transparent 60%),
-            radial-gradient(900px 500px at -10% 110%, #e1f3f1 0%, transparent 55%), #f5f2fb;
-  --surface:#ffffff; --surface-2:#f6f2fc; --elev:#ffffff;
-  --border:rgba(27,21,52,.10); --border-2:rgba(27,21,52,.18);
-  --fg:#1b1534; --fg-2:#3d3557; --muted:#5d596e; --faint:#ada9c2; --logo-fill:#1b1534;
-  --accent:#8a00e5; --accent-2:#641e8c; --accent-weak:rgba(138,0,229,.10); --accent-line:rgba(138,0,229,.28); --on-accent:#ffffff;
-  --violet:#017873; --violet-weak:rgba(1,120,115,.12);
-  --ok:#11a866; --ok-weak:rgba(17,168,102,.12); --warn:#b8841a; --warn-weak:rgba(184,132,26,.12);
-  --danger:#d83a4d; --danger-weak:rgba(216,58,77,.10);
-  --shadow:0 1px 2px rgba(11,33,38,.04), 0 16px 36px -26px rgba(11,33,38,.35);
+  --bg:#f2f2f2;
+  --bg-grad:#f2f2f2;
+  --surface:#ffffff; --surface-2:#f8f8f8; --elev:#ffffff;
+  --border:rgba(27,21,52,.12); --border-2:rgba(27,21,52,.20);
+  --fg:#1b1534; --fg-2:#3d3557; --muted:#5d596e; --faint:#969696; --logo-fill:#1b1534;
+  --accent:#8a00e5; --accent-2:#641e8c; --accent-weak:rgba(138,0,229,.09); --accent-line:rgba(138,0,229,.28); --on-accent:#ffffff;
+  --violet:#0064d6; --violet-weak:rgba(0,100,214,.10);
+  --ok:#0e9e5a; --ok-weak:rgba(14,158,90,.12); --warn:#c8323a; --warn-weak:rgba(200,50,58,.10);
+  --danger:#c8121b; --danger-weak:rgba(200,18,27,.10);
+  --shadow:none;
 }
 html[lang="en"]{--font:var(--font-en);}
 *{box-sizing:border-box;}
@@ -81,7 +79,7 @@ a{color:var(--accent-2);}
 
 /* Progress */
 .prog{position:sticky;top:65px;z-index:10;margin:20px 0 6px;height:5px;border-radius:99px;background:var(--surface-2);overflow:hidden;}
-.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--violet));transition:width .3s;}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s;}
 
 /* Section card */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
@@ -124,7 +122,7 @@ input:focus,textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:44px;padding:0 20px;border-radius:11px;
   border:none;cursor:pointer;font-family:var(--font);font-weight:700;font-size:14.5px;text-decoration:none;transition:transform .08s,filter .15s;}
 .btn:active{transform:translateY(1px);}
-.btn-primary{background:linear-gradient(150deg,var(--accent),var(--accent-2));color:var(--on-accent);}
+.btn-primary{background:var(--accent);color:var(--on-accent);}
 .btn-primary:hover{filter:brightness(1.06);}
 .btn-ghost{background:var(--surface-2);border:1px solid var(--border-2);color:var(--fg);}
 .btn-ghost:hover{border-color:var(--accent-line);}

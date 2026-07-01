@@ -10,7 +10,8 @@
   const pf = CH.pf;   // lang-aware percent, e.g. "96.9%" / "٩٦٫٩٪"
   const nfd = CH.nfd; // lang-aware integer-or-1dp decimal
   const MONTHS = D.MONTHS, PROJECTS = D.PROJECTS;
-  const PCOLORS = ["var(--accent)", "var(--violet)", "var(--info)", "var(--ok)", "var(--warn)", "var(--orange)", "var(--accent-2)"];
+  // SE-tonal categorical palette (per-project) — purple family + blue/green + grey, all in-palette
+  const PCOLORS = ["#8a00e5", "#007aff", "#14da79", "#a54bf7", "#b96cff", "#5d596e", "#cf9bff"];
   const ROW_CAP = 60;
 
   /* ---------- state ---------- */
