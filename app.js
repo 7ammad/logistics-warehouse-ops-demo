@@ -7,6 +7,8 @@
   "use strict";
   const D = window.DATA, t = window.t, I = window.I18N;
   const nf = CH.nf;
+  const pf = CH.pf;   // lang-aware percent, e.g. "96.9%" / "٩٦٫٩٪"
+  const nfd = CH.nfd; // lang-aware integer-or-1dp decimal
   const MONTHS = D.MONTHS, PROJECTS = D.PROJECTS;
   const PCOLORS = ["var(--accent)", "var(--violet)", "var(--info)", "var(--ok)", "var(--warn)", "var(--orange)", "var(--accent-2)"];
   const ROW_CAP = 60;
@@ -93,8 +95,8 @@
 
     let raw = agg[cfg.k];
     let disp, unit = cfg.unit ? t(cfg.unit) : "";
-    if (cfg.pct) { disp = raw; unit = "%"; }
-    else if (cfg.dec) { disp = (+raw).toFixed(1); }
+    if (cfg.pct) { disp = nfd(raw); unit = "%"; }
+    else if (cfg.dec) { disp = nfd(+raw); }
     else { disp = nf(raw); }
 
     let deltaHtml = "";
@@ -104,7 +106,7 @@
       const isGood = cfg.lowerBetter ? d <= 0 : d >= 0;
       const cls = flat ? "flat" : isGood ? "up" : "down";
       const arrow = flat ? "" : d > 0 ? arrowUp : arrowDn;
-      deltaHtml = `<span class="delta ${cls}">${arrow}${Math.abs(d).toFixed(1)}%</span><span class="vs">${vsLabel}</span>`;
+      deltaHtml = `<span class="delta ${cls}">${arrow}${pf(Math.abs(d))}</span><span class="vs">${vsLabel}</span>`;
     } else {
       deltaHtml = `<span class="delta flat">—</span><span class="vs">${vsLabel}</span>`;
     }
@@ -130,7 +132,7 @@
 
   /* ---------- narrative ---------- */
   function narrative(agg) {
-    const scope = state.project === "all" ? `${PROJECTS.length} ${t("projects.word")}` : projName(state.project);
+    const scope = state.project === "all" ? `${nf(PROJECTS.length)} ${t("projects.word")}` : projName(state.project);
     const mlabel = state.month === "all" ? monName("all") : monName(state.month);
     const totalShip = agg.inbound + agg.outbound;
     let lead;
@@ -139,14 +141,14 @@
         (<b>${nf(agg.inbound)}</b> واردة / <b>${nf(agg.outbound)}</b> صادرة) عبر <b>${scope}</b>،
         ونقل <b>${nf(agg.equipment)}</b> وحدة معدات كبيرة، وأنجز <b>${nf(agg.collections)}</b> أمر تجميع،
         وصرف <b>${nf(agg.items)}</b> صنفاً إلى قسم الحماية. بلغت نسبة الالتزام بالتخليص الجمركي
-        <b>${agg.onTimePct}%</b> مقابل المستهدف ≤ ٣ أيام (بمتوسط <b>${agg.avgDays}</b> يوم)،
+        <b>${pf(agg.onTimePct)}</b> مقابل المستهدف ≤ ٣ أيام (بمتوسط <b>${nfd(agg.avgDays)}</b> يوم)،
         مع <b>${nf(agg.breaches)}</b> تجاوزاً تمّت معالجته وتوثيقه في سجل الأسباب الجذرية.`;
     } else {
       lead = `In <b>${mlabel}</b>, the Logistics &amp; Warehouse team cleared <b>${nf(totalShip)}</b> shipments
         (<b>${nf(agg.inbound)}</b> inbound / <b>${nf(agg.outbound)}</b> outbound) across <b>${scope}</b>,
         moved <b>${nf(agg.equipment)}</b> large-equipment units, completed <b>${nf(agg.collections)}</b> collection orders,
         and issued <b>${nf(agg.items)}</b> items to the Protection department. Customs clearance held at
-        <b>${agg.onTimePct}%</b> on-time against the ≤ 3-day target (avg <b>${agg.avgDays}</b> days),
+        <b>${pf(agg.onTimePct)}</b> on-time against the ≤ 3-day target (avg <b>${nfd(agg.avgDays)}</b> days),
         with <b>${nf(agg.breaches)}</b> breach(es) logged and resolved in the root-cause log.`;
     }
     const pill = (label, val) => `<span class="npill">${label}<b>${val}</b></span>`;
@@ -154,8 +156,8 @@
       <div class="eyebrow">${t("narr.eyebrow")} · ${mlabel}</div>
       <p class="lead">${lead}</p>
       <div class="pills">
-        ${pill(t("kpi.ontime") + " ", agg.onTimePct + "%")}
-        ${pill(t("kpi.avgdays") + " ", agg.avgDays + " " + t("unit.days"))}
+        ${pill(t("kpi.ontime") + " ", pf(agg.onTimePct))}
+        ${pill(t("kpi.avgdays") + " ", nfd(agg.avgDays) + " " + t("unit.days"))}
         ${pill(t("kpi.manhours") + " ", nf(agg.manHours) + " " + t("unit.hour"))}
         ${pill(t("kpi.spaceCost") + " ", nf(agg.spaceCost) + " " + t("sar"))}
         ${pill(t("kpi.laborCost") + " ", nf(agg.laborCost) + " " + t("sar"))}
@@ -211,8 +213,8 @@
     const scoreRows = bp.map((b) => `<tr>
       <td class="strong">${L(b.proj)} <span class="mono" style="color:var(--faint)">${b.proj.code || ""}</span></td>
       <td><div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${(b.total / maxVol * 100).toFixed(0)}%"></div></div><span class="pct">${nf(b.total)}</span></div></td>
-      <td><span class="chip ${b.onTimePct >= 95 ? "ok" : b.onTimePct >= 90 ? "warn" : "danger"}">${b.onTimePct}%</span></td>
-      <td class="num">${b.avgDays}</td>
+      <td><span class="chip ${b.onTimePct >= 95 ? "ok" : b.onTimePct >= 90 ? "warn" : "danger"}">${pf(b.onTimePct)}</span></td>
+      <td class="num">${nfd(b.avgDays)}</td>
       <td class="num">${nf(b.items)}</td>
     </tr>`);
     const scoreHead = th("th.project") + th("th.volume") + th("th.ontime") + th("th.avgdays") + th("th.items", "num");
@@ -312,7 +314,7 @@
         ${CH.ring(Math.round(agg.onTimePct), { label: t("legend.ontime") })}
         <div style="flex:1;min-width:200px">
           <div style="font-size:13.5px;font-weight:700">${t("chart.clearTrend")}</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">${t("target")}: <b style="color:var(--accent)">${t("target.clear")}</b> · ${t("kpi.avgdays")}: <b>${agg.avgDays} ${t("unit.days")}</b> · ${t("kpi.breaches")}: <b style="color:var(--danger)">${nf(agg.breaches)}</b></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">${t("target")}: <b style="color:var(--accent)">${t("target.clear")}</b> · ${t("kpi.avgdays")}: <b>${nfd(agg.avgDays)} ${t("unit.days")}</b> · ${t("kpi.breaches")}: <b style="color:var(--danger)">${nf(agg.breaches)}</b></div>
           <div style="margin-top:12px">${CH.lineTarget(ser.map((s) => ({ label: monShort(s.m.id), v: s.onTimePct })), { target: 95, targetLabel: t("legend.target") })}</div>
         </div>
       </div></div>
@@ -348,9 +350,9 @@
 
     const kpiStrip = `<div class="kpi-grid">
       <div class="kpi"><div class="k-label">${icon("flow")}${t("kpi.mirs")}</div><div class="k-value">${nf(total)}</div><div class="k-foot"><span class="vs">${monName(state.month)}</span></div></div>
-      <div class="kpi k-violet"><div class="k-label">${icon("box")}${t("th.lineitems")}</div><div class="k-value">${nf(totalItems)}<span class="unit">${t("unit.item")}</span></div><div class="k-foot"><span class="vs">${t("avgMonth")} ~${rows.length ? Math.round(totalItems / rows.length) : 0}/${t("th.mir")}</span></div></div>
-      <div class="kpi k-warn"><div class="k-label">${icon("clock")}${t("th.turnaround")}</div><div class="k-value">${avgTA}<span class="unit">${t("unit.hour")}</span></div><div class="k-foot"><span class="vs">${t("blended")}</span></div></div>
-      <div class="kpi k-ok"><div class="k-label">${icon("percent")}${t("kit.issued")}</div><div class="k-value">${issuedPct}<span class="unit">%</span></div><div class="k-foot"><span class="vs">${t("dept.protection")}</span></div></div>
+      <div class="kpi k-violet"><div class="k-label">${icon("box")}${t("th.lineitems")}</div><div class="k-value">${nf(totalItems)}<span class="unit">${t("unit.item")}</span></div><div class="k-foot"><span class="vs">${t("avgMonth")} ~${nf(rows.length ? Math.round(totalItems / rows.length) : 0)}/${t("th.mir")}</span></div></div>
+      <div class="kpi k-warn"><div class="k-label">${icon("clock")}${t("th.turnaround")}</div><div class="k-value">${nfd(avgTA)}<span class="unit">${t("unit.hour")}</span></div><div class="k-foot"><span class="vs">${t("blended")}</span></div></div>
+      <div class="kpi k-ok"><div class="k-label">${icon("percent")}${t("kit.issued")}</div><div class="k-value">${nfd(issuedPct)}<span class="unit">%</span></div><div class="k-foot"><span class="vs">${t("dept.protection")}</span></div></div>
     </div>`;
 
     const body = disp.map((r) => `<tr>
@@ -387,7 +389,7 @@
 
     const kpiStrip = `<div class="kpi-grid">
       <div class="kpi"><div class="k-label">${icon("inventory")}${t("th.code")}</div><div class="k-value">${nf(total)}<span class="unit">SKU</span></div><div class="k-foot"><span class="vs">${state.project === "all" ? t("filter.all") : projName(state.project)}</span></div></div>
-      <div class="kpi k-ok"><div class="k-label">${icon("box")}${t("st.in_stock")}</div><div class="k-value">${nf(inStock)}</div><div class="k-foot"><span class="vs">${total ? Math.round(inStock / total * 100) : 0}%</span></div></div>
+      <div class="kpi k-ok"><div class="k-label">${icon("box")}${t("st.in_stock")}</div><div class="k-value">${nf(inStock)}</div><div class="k-foot"><span class="vs">${pf(total ? Math.round(inStock / total * 100) : 0)}</span></div></div>
       <div class="kpi k-warn"><div class="k-label">${icon("alert")}${t("st.low")}</div><div class="k-value">${nf(low)}</div><div class="k-foot"><span class="vs">${t("th.available")} &lt; 25</span></div></div>
       <div class="kpi k-danger"><div class="k-label">${icon("alert")}${t("st.out")}</div><div class="k-value">${nf(out)}</div><div class="k-foot"><span class="vs">${t("note")}</span></div></div>
     </div>`;
@@ -418,8 +420,8 @@
     const totalM2 = agg.indoorM2 + agg.outdoorM2;
 
     const kpiStrip = `<div class="kpi-grid">
-      <div class="kpi"><div class="k-label">${icon("warehouse")}${t("legend.indoor")}</div><div class="k-value">${nf(agg.indoorM2)}<span class="unit">${t("unit.m2")}</span></div><div class="k-foot"><span class="vs">${totalM2 ? Math.round(agg.indoorM2 / totalM2 * 100) : 0}%</span></div></div>
-      <div class="kpi k-violet"><div class="k-label">${icon("warehouse")}${t("legend.outdoor")}</div><div class="k-value">${nf(agg.outdoorM2)}<span class="unit">${t("unit.m2")}</span></div><div class="k-foot"><span class="vs">${totalM2 ? Math.round(agg.outdoorM2 / totalM2 * 100) : 0}%</span></div></div>
+      <div class="kpi"><div class="k-label">${icon("warehouse")}${t("legend.indoor")}</div><div class="k-value">${nf(agg.indoorM2)}<span class="unit">${t("unit.m2")}</span></div><div class="k-foot"><span class="vs">${pf(totalM2 ? Math.round(agg.indoorM2 / totalM2 * 100) : 0)}</span></div></div>
+      <div class="kpi k-violet"><div class="k-label">${icon("warehouse")}${t("legend.outdoor")}</div><div class="k-value">${nf(agg.outdoorM2)}<span class="unit">${t("unit.m2")}</span></div><div class="k-foot"><span class="vs">${pf(totalM2 ? Math.round(agg.outdoorM2 / totalM2 * 100) : 0)}</span></div></div>
       <div class="kpi k-ok"><div class="k-label">${icon("inventory")}${t("th.totalspace")}</div><div class="k-value">${nf(totalM2)}<span class="unit">${t("unit.m2")}</span></div><div class="k-foot"><span class="vs">${monName(state.month)}</span></div></div>
       <div class="kpi k-warn"><div class="k-label">${icon("warehouse")}${t("kpi.spaceCost")}</div><div class="k-value">${nf(agg.spaceCost)}<span class="unit">${t("sar")}</span></div><div class="k-foot"><span class="vs">${t("perMonth")}</span></div></div>
     </div>`;
@@ -472,7 +474,7 @@
     const kpiStrip = `<div class="kpi-grid">
       <div class="kpi"><div class="k-label">${icon("people")}${t("th.headcount")}</div><div class="k-value">${nf(hcDisplay)}<span class="unit">${t("unit.person")}</span></div><div class="k-foot"><span class="vs">${t("note")}: ~260 ${t("unit.hour")}/${t("unit.person")}</span></div></div>
       <div class="kpi k-violet"><div class="k-label">${icon("hours")}${t("kpi.manhours")}</div><div class="k-value">${nf(agg.manHours)}<span class="unit">${t("unit.hour")}</span></div><div class="k-foot"><span class="vs">${monName(state.month)}</span></div></div>
-      <div class="kpi k-ok"><div class="k-label">${icon("percent")}${t("th.hourrate")}</div><div class="k-value">${blended}<span class="unit">${t("sar")}</span></div><div class="k-foot"><span class="vs">${t("blended")}</span></div></div>
+      <div class="kpi k-ok"><div class="k-label">${icon("percent")}${t("th.hourrate")}</div><div class="k-value">${nfd(blended)}<span class="unit">${t("sar")}</span></div><div class="k-foot"><span class="vs">${t("blended")}</span></div></div>
       <div class="kpi k-warn"><div class="k-label">${icon("people")}${t("kpi.laborCost")}</div><div class="k-value">${nf(agg.laborCost)}<span class="unit">${t("sar")}</span></div><div class="k-foot"><span class="vs">${t("perMonth")}</span></div></div>
     </div>`;
 
@@ -486,7 +488,7 @@
     </tr>`);
     body.push(`<tr style="background:var(--surface-2)"><td class="strong">${t("grandtotal")}</td>
       <td class="num strong">${nf(totHc)}</td><td class="num strong">${nf(agg.manHours)}</td>
-      <td class="num">${blended}</td><td class="num strong" style="color:var(--violet)">&nbsp;${nf(agg.laborCost)} ${t("sar")}</td></tr>`);
+      <td class="num">${nfd(blended)}</td><td class="num strong" style="color:var(--violet)">&nbsp;${nf(agg.laborCost)} ${t("sar")}</td></tr>`);
     const head = th("th.project") + th("th.headcount", "num") + th("th.hours", "num") + th("th.hourrate", "num") + th("th.cost");
 
     return `<div class="view">${kpiStrip}
@@ -561,8 +563,8 @@
     const kpiStrip = `<div class="kpi-grid">
       <div class="kpi k-danger"><div class="k-label">${icon("alert")}${t("kpi.breaches")}</div><div class="k-value">${nf(total)}</div><div class="k-foot"><span class="vs">${monName(state.month)}</span></div></div>
       <div class="kpi k-warn"><div class="k-label">${icon("doc")}${t("st.open")}</div><div class="k-value">${nf(open)}</div><div class="k-foot"><span class="vs">${t("card.exceptions.sub")}</span></div></div>
-      <div class="kpi k-ok"><div class="k-label">${icon("doc")}${t("st.closed")}</div><div class="k-value">${nf(closed)}</div><div class="k-foot"><span class="vs">${total ? Math.round(closed / total * 100) : 0}%</span></div></div>
-      <div class="kpi k-violet"><div class="k-label">${icon("clock")}${t("th.delay")}</div><div class="k-value">${avgDelay}<span class="unit">${t("unit.days")}</span></div><div class="k-foot"><span class="vs">${t("avgMonth")}</span></div></div>
+      <div class="kpi k-ok"><div class="k-label">${icon("doc")}${t("st.closed")}</div><div class="k-value">${nf(closed)}</div><div class="k-foot"><span class="vs">${pf(total ? Math.round(closed / total * 100) : 0)}</span></div></div>
+      <div class="kpi k-violet"><div class="k-label">${icon("clock")}${t("th.delay")}</div><div class="k-value">${nfd(avgDelay)}<span class="unit">${t("unit.days")}</span></div><div class="k-foot"><span class="vs">${t("avgMonth")}</span></div></div>
     </div>`;
 
     const body = rows.map((r) => `<tr class="${r.headline ? "row-breach" : ""}">

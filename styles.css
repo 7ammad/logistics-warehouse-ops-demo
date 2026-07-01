@@ -417,8 +417,44 @@ table.tbl .strong { font-weight: 700; }
 /* on-screen: print button row on the management report */
 .report-actions { display: flex; justify-content: flex-end; margin-bottom: 12px; }
 
-/* print: only the active paper */
+/* print: force print-safe (dark-on-white) colors REGARDLESS of the active theme.
+   The dashboard defaults to the dark theme, whose --fg is near-white (#e8f0f1);
+   without this the white print background left every KPI number and the summary
+   sentence white-on-white (invisible). Re-declare the light palette under @media
+   print so the Management Report always prints readable. */
 @media print {
+  :root, :root[data-theme="dark"], :root[data-theme="light"] {
+    --bg:        #ffffff;
+    --bg-grad:   #ffffff;
+    --surface:   #ffffff;
+    --surface-2: #f4f8f8;
+    --surface-3: #ffffff;
+    --elev:      #ffffff;
+    --border:    rgba(11,33,38,.16);
+    --border-2:  rgba(11,33,38,.24);
+    --fg:        #0c1c20;
+    --fg-2:      #2c4248;
+    --muted:     #4a5d63;
+    --faint:     #6a7d82;
+    --accent:    #0c8f87;
+    --accent-2:  #0aa79d;
+    --accent-weak: rgba(12,143,135,.10);
+    --accent-line: rgba(12,143,135,.28);
+    --violet:    #6b54e8;
+    --violet-weak: rgba(107,84,232,.10);
+    --ok:        #0b8f57;
+    --ok-weak:   rgba(11,143,87,.12);
+    --warn:      #9a6c12;
+    --warn-weak: rgba(154,108,18,.12);
+    --orange:    #c1621b;
+    --danger:    #c22f42;
+    --danger-weak: rgba(194,47,66,.10);
+    --info:      #2168b0;
+    --info-weak: rgba(33,104,176,.10);
+    --shadow:    none;
+  }
+  body { background: #fff !important; color: #0c1c20 !important; }
+
   .sidebar, .topbar, .doc-toolbar, .section-head, .scrim, .foot-note, .report-actions { display: none !important; }
   body, .app, .main, .content { background: #fff !important; display: block; padding: 0; margin: 0; }
   .paper { box-shadow: none; border: none; max-width: 100%; border-radius: 0; }

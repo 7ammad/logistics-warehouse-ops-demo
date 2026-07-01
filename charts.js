@@ -10,6 +10,16 @@
   let LANG = "en";
   function setLang(l) { LANG = (l === "ar") ? "ar" : "en"; }
   const nf = (n) => Math.round(n).toLocaleString(LANG === "ar" ? "ar-EG" : "en-US");
+  const loc = () => (LANG === "ar" ? "ar-EG" : "en-US");
+  // lang-aware decimal (fixed places, keeps trailing zeros) and percent
+  const df = (n, places) => {
+    const p = places == null ? 1 : places;
+    return Number(n).toLocaleString(loc(), { minimumFractionDigits: p, maximumFractionDigits: p });
+  };
+  // integer or decimal, minimal — for values that are already whole or 1-dp
+  const nfd = (n) => Number(n).toLocaleString(loc(), { maximumFractionDigits: 1 });
+  // percent: value is a number (e.g. 96.9 or 97), returns localized digits + "%"
+  const pf = (n) => nfd(n) + "%";
   const niceMax = (v) => {
     if (v <= 0) return 10;
     const pow = Math.pow(10, Math.floor(Math.log10(v)));
@@ -54,7 +64,7 @@
     for (let i = 0; i <= 4; i++) {
       const yy = padT + (ih / 4) * i, val = hi - ((hi - lo) / 4) * i;
       g += `<line x1="${padL}" y1="${yy.toFixed(1)}" x2="${W - padR}" y2="${yy.toFixed(1)}" stroke="var(--border)" stroke-width="1"/>`;
-      g += `<text x="${padL - 7}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10">${val}%</text>`;
+      g += `<text x="${padL - 7}" y="${(yy + 3.5).toFixed(1)}" text-anchor="end" font-size="10">${pf(val)}</text>`;
     }
     const tgt = opts.target != null ? opts.target : 95;
     const ty = y(tgt);
@@ -66,7 +76,7 @@
     g += `<polyline points="${pts.map((p) => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" ")}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>`;
     rows.forEach((r, i) => {
       g += `<circle cx="${x(i).toFixed(1)}" cy="${y(r.v).toFixed(1)}" r="3.6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2"/>`;
-      g += `<text x="${x(i).toFixed(1)}" y="${(y(r.v) - 11).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--fg-2)" font-weight="700">${r.v}</text>`;
+      g += `<text x="${x(i).toFixed(1)}" y="${(y(r.v) - 11).toFixed(1)}" text-anchor="middle" font-size="10" fill="var(--fg-2)" font-weight="700">${nfd(r.v)}</text>`;
       g += `<text x="${x(i).toFixed(1)}" y="${H - 11}" text-anchor="middle" font-size="10.5">${r.label}</text>`;
     });
     return `<div class="chart"><svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${opts.aria || ""}">${g}</svg></div>`;
@@ -147,9 +157,9 @@
         <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${col}" stroke-width="11" stroke-linecap="round"
           stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${off.toFixed(1)}" transform="rotate(-90 ${cx} ${cy})"/>
       </svg>
-      <div class="gv"><b>${pct}%</b><span>${opts.label || ""}</span></div>
+      <div class="gv"><b>${pf(pct)}</b><span>${opts.label || ""}</span></div>
     </div>`;
   }
 
-  window.CH = { groupedBars, lineTarget, area, donut, spark, ring, nf, niceMax, setLang };
+  window.CH = { groupedBars, lineTarget, area, donut, spark, ring, nf, df, nfd, pf, niceMax, setLang };
 })();
